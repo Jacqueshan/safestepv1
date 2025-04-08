@@ -8,12 +8,12 @@ import { getFunctions } from 'firebase/functions'; // If you plan to use Cloud F
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBj5ykvVg_MCxi18iSmBgxAGgu8cZ6Z7Mc",
-  authDomain: "safestepv1.firebaseapp.com",
-  projectId: "safestepv1",
-  storageBucket: "safestepv1.firebasestorage.app",
-  messagingSenderId: "186492724925",
-  appId: "1:186492724925:web:2940b415f7d26956cfb9d4"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
 };
 
 // Initialize Firebase
