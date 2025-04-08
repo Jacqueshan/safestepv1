@@ -122,7 +122,7 @@ function MapComponent({ userId }) {
         setAddFenceError(''); setIsSaving(true);
         try {
             const geofencesCollectionRef = collection(db, 'geofences');
-            await addDoc(geofencesCollectionRef, { ownerUid: userId, name: newFenceName, center: new GeoPoint(newFenceCenter.lat, newFenceCenter.lng), radius: Number(newFenceRadius), createdAt: serverTimestamp(), });
+            await addDoc(geofencesCollectionRef, { ownerUid: userId, name: newFenceName, center: new GeoPoint(newFenceCenter.lat, newFenceCenter.lng), radius: Number(newFenceRadius), createdAt: serverTimestamp(), isEnabled: true});
             console.log('Geofence saved successfully!'); setIsAddingFence(false); setNewFenceCenter(null); setNewFenceName(''); setNewFenceRadius(100); setAddressInput('');
         } catch (err) { console.error("Error saving geofence:", err); setAddFenceError('Failed to save geofence. Please try again.');
         } finally { setIsSaving(false); }
@@ -194,8 +194,26 @@ function MapComponent({ userId }) {
                     options={{ /* ... */ }} onLoad={onLoad} onUnmount={onUnmount}
                     onClick={handleMapClick} // Still allow map click to set center
                 >
-                    {/* Display Existing Geofences - Remains the same */}
-                    {!loadingFences && geofences.map(fence => ( <Circle key={fence.id} center={fence.center} radius={fence.radius} options={defaultCircleOptions} /> ))}
+                    {/* Display Existing Geofences */}
+          {!loadingFences && geofences.map(fence => {
+              // Define options based on isEnabled status
+              const circleOptions = {
+                  ...defaultCircleOptions, // Start with defaults from outside the map function
+                  fillOpacity: fence.isEnabled ? 0.25 : 0.10, // Less visible fill if disabled
+                  strokeOpacity: fence.isEnabled ? 0.8 : 0.3, // Less visible stroke if disabled
+                  strokeColor: fence.isEnabled ? '#FF0000' : '#888888', // Red if enabled, Gray if disabled
+                  fillColor: fence.isEnabled ? '#FF0000' : '#888888',   // Red if enabled, Gray if disabled
+              };
+
+              return (
+                  <Circle
+                      key={fence.id}
+                      center={fence.center}
+                      radius={fence.radius}
+                      options={circleOptions} // Pass the dynamic options here
+                  />
+              );
+          })}
 
                     {/* Display Temporary Marker for New Fence Center - Remains the same */}
                     {isAddingFence && newFenceCenter && ( <MarkerF position={newFenceCenter} /> )}

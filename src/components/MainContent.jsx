@@ -1,9 +1,21 @@
 // src/components/MainContent.jsx
 import React from 'react';
-import MapComponent from './MapComponent'; // <-- Import the MapComponent
+import MapComponent from './MapComponent';    // Renders the map
+import GeofenceList from './GeofenceList';  // Renders the geofence list - Make sure this import is present
 
 // Receive the user prop from App.jsx
 function MainContent({ user }) {
+  // Ensure user object exists and has uid before rendering components that need it
+  const userId = user?.uid;
+
+  // If userId is somehow not available even though user object exists (shouldn't happen with Firebase Auth)
+  // you could add an extra check here, but App.jsx already ensures 'user' is not null.
+  if (!userId) {
+     // This case should ideally not be reached if App.jsx logic is correct
+     console.error("MainContent rendered without a valid user ID!");
+     return <div className="container mx-auto p-8 text-red-500">Error: User information is missing.</div>;
+  }
+
   return (
     // Main container for dashboard content with padding
     <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -21,10 +33,8 @@ function MainContent({ user }) {
           <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Map Overview</h3>
 
           {/* The actual Map Component is rendered here, passing the userId */}
-          <MapComponent userId={user.uid} />
+          <MapComponent userId={userId} />
 
-          {/* You can keep or remove the note below */}
-          {/* <p className="text-xs text-gray-500 mt-2">Real-time map view.</p> */}
         </div>
 
         {/* --- Right Column / Sidebar Area --- */}
@@ -61,6 +71,9 @@ function MainContent({ user }) {
               </li>
             </ul>
           </div>
+
+          {/* Geofence List Component (Added below the device list placeholder) */}
+          <GeofenceList userId={userId} />
 
         </div> {/* End of Sidebar Column */}
 
