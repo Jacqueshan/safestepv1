@@ -20,8 +20,8 @@ function MainContent({ user }) {
         <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200">
           <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Map Overview</h3>
 
-          {/* The actual Map Component is rendered here */}
-          <MapComponent />
+          {/* The actual Map Component is rendered here, passing the userId */}
+          <MapComponent userId={user.uid} />
 
           {/* You can keep or remove the note below */}
           {/* <p className="text-xs text-gray-500 mt-2">Real-time map view.</p> */}

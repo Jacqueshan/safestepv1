@@ -6,7 +6,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth"; // Import listener 
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import LoginPage from './components/LoginPage'; // Import the LoginPage
-import './App.css';
+import './App.css'; // Or './index.css' if you renamed it
 
 function App() {
   const [user, setUser] = useState(null); // State to hold the logged-in user object
@@ -48,27 +48,32 @@ function App() {
   // Main application structure
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Conditionally render Header with Sign Out button */}
-      {user && <Header />} {/* Maybe pass user and handleSignOut to Header later */}
+      {/* Conditionally render Header only when logged in */}
+      {user && <Header />} {/* You might pass handleSignOut to Header later */}
 
       <div className="flex-grow"> {/* Ensure content area takes remaining space */}
-        {user ? (
+        {user ? ( // Check if user is logged in
           <>
-            {/* Show Sign Out button somewhere accessible */}
-             <div className="container mx-auto px-6 pt-4 flex justify-end">
-                <button
-                    onClick={handleSignOut}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
-                >
-                    Sign Out
-                </button>
-             </div>
-            <MainContent />
+            {/* Show Sign Out button somewhere accessible (e.g., below header or in MainContent) */}
+            <div className="container mx-auto px-6 pt-4 flex justify-end">
+              <button
+                onClick={handleSignOut}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
+              >
+                Sign Out
+              </button>
+            </div>
+            {/* --- THIS IS THE CORRECTED LINE --- */}
+            {/* Render MainContent and pass the user object as a prop */}
+            <MainContent user={user} />
+            {/* --- END OF CORRECTION --- */}
           </>
         ) : (
-          <LoginPage /> // Show LoginPage if user is not logged in
+          // If user is not logged in, show LoginPage
+          <LoginPage />
         )}
       </div>
+      {/* Optional Footer could go here */}
     </div>
   );
 }
