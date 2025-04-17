@@ -2,6 +2,8 @@
 import React, { useState } from 'react'; // Import useState hook
 import MapComponent from './MapComponent';    // Renders the map
 import GeofenceList from './GeofenceList';  // Renders the geofence list
+import DeviceForm from './DeviceForm';
+import DeviceListComponent from './DeviceListComponent'; // Use the new name
 
 // Receive the user prop from App.jsx
 function MainContent({ user }) {
@@ -42,8 +44,8 @@ function MainContent({ user }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* --- Map Area (Spanning multiple columns on larger screens) --- */}
-        <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Map Overview</h3>
+        <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
+  <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Map Overview</h3>
 
           {/* The actual Map Component is rendered here, passing the userId */}
           <MapComponent userId={userId} />
@@ -71,40 +73,16 @@ function MainContent({ user }) {
         {/* --- Right Column / Sidebar Area --- */}
         <div className="space-y-6"> {/* Use space-y to add vertical space between items in this column */}
 
-          {/* Add Device Action Placeholder */}
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Add New Device</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Register a new SafeStep tracker to start monitoring.
-            </p>
-            <button
-              type="button"
-              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
-            >
-              Add Device
-            </button>
-          </div>
+          {/* Render the functional DeviceForm, passing the userId */}
+          <DeviceForm userId={userId} />
 
-          {/* Device List Summary Placeholder */}
-          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Your Devices</h3>
-            <p className="text-sm text-gray-600 mb-4">A list of your registered devices will appear here.</p>
-            <ul className="space-y-2">
-              <li className="flex justify-between items-center p-2 border rounded bg-gray-50">
-                <span className="text-sm font-medium text-gray-700">Fido's Tracker (Placeholder)</span>
-                <span className="text-xs font-semibold text-green-600">Online</span>
-              </li>
-              <li className="flex justify-between items-center p-2 border rounded bg-gray-50">
-                <span className="text-sm font-medium text-gray-700">Rover's Backup (Placeholder)</span>
-                <span className="text-xs font-semibold text-gray-500">Offline</span>
-              </li>
-            </ul>
-          </div>
+          {/* Render the functional DeviceList, passing the userId */}
+          <DeviceListComponent userId={userId} />
 
-          {/* Geofence List Component (Added below the device list placeholder) */}
+          {/* Geofence List Component (Remains the same) */}
           <GeofenceList userId={userId} />
 
-        </div> 
+        </div> {/* End of Sidebar Column */} 
       </div> 
     </main>
   );

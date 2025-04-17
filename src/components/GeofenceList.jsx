@@ -74,7 +74,12 @@ const handleDeleteFence = async (id, name) => {
   };
 
   if (loading) {
-    return <p className="text-gray-500 text-sm p-4">Loading geofences...</p>;
+    // Wrap spinner in the same card style for consistency
+    return (
+      <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md border border-gray-200 flex justify-center items-center min-h-[100px]"> {/* Added flex centering and min-height */}
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div> {/* Simple Tailwind Spinner */}
+      </div>
+    );
   }
 
   if (error) {
