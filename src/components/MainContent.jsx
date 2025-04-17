@@ -2,15 +2,15 @@
 import React, { useState } from 'react'; // Import useState hook
 import MapComponent from './MapComponent';    // Renders the map
 import GeofenceList from './GeofenceList';  // Renders the geofence list
-import DeviceForm from './DeviceForm';
-import DeviceListComponent from './DeviceListComponent'; // Use the new name
+import DeviceForm from './DeviceForm';      // Renders the device form
+import DeviceListComponent from './DeviceListComponent'; // Renders the device list
 
 // Receive the user prop from App.jsx
 function MainContent({ user }) {
   // Ensure user object exists and has uid before rendering components that need it
   const userId = user?.uid;
 
-  // --- Add state for the SOS message ---
+  // State for the SOS message
   const [sosMessage, setSosMessage] = useState('');
 
   if (!userId) {
@@ -18,24 +18,24 @@ function MainContent({ user }) {
      return <div className="container mx-auto p-8 text-red-500">Error: User information is missing.</div>;
   }
 
-  // --- Handler for the SOS button click ---
+  // Handler for the SOS button click
   const handleSosClick = () => {
     console.log('SOS Button Clicked! User ID:', userId, 'Timestamp:', new Date().toISOString());
-    // Set a message to confirm activation (temporary UI feedback)
     setSosMessage('SOS Activated! [Future: High-frequency tracking enabled, notifications sent]');
-    // Clear the message after a delay (e.g., 10 seconds)
     setTimeout(() => {
       setSosMessage('');
-    }, 10000);
+    }, 10000); // Clear after 10 seconds
   };
+
+  // Define standard styles for reuse (optional, but can help consistency)
+  const cardClasses = "bg-white p-6 rounded-xl shadow-lg border border-gray-200";
+  const headingClasses = "text-xl font-semibold text-gray-800 mb-4"; // Standardized heading style
 
   return (
     // Main container for dashboard content with padding
-    // No background image classes/style needed here as per your decision
-    <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow"> {/* Removed relative class if unused */}
+    <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
 
       {/* Dashboard Title */}
-      {/* Removed background/blur classes from title as background image was removed */}
       <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6">
         Welcome, {user?.email || 'User'}! {/* Display user email if available */}
       </h2>
@@ -44,14 +44,16 @@ function MainContent({ user }) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* --- Map Area (Spanning multiple columns on larger screens) --- */}
-        <div className="lg:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-200">
-  <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-3">Map Overview</h3>
+        {/* Applied standardized card classes */}
+        <div className={cardClasses + " lg:col-span-2"}>
+          {/* Applied standardized heading classes */}
+          <h3 className={headingClasses}>Map Overview</h3>
 
           {/* The actual Map Component is rendered here, passing the userId */}
           <MapComponent userId={userId} />
 
-          {/* --- SOS BUTTON ADDED HERE --- */}
-          <div className="mt-4 pt-4 border-t border-gray-200"> {/* Added spacing and separator */}
+          {/* SOS BUTTON Section */}
+          <div className="mt-4 pt-4 border-t border-gray-200">
             <button
               type="button"
               onClick={handleSosClick}
@@ -66,24 +68,27 @@ function MainContent({ user }) {
               </p>
             )}
           </div>
-          {/* --- END OF SOS BUTTON --- */}
+          {/* END OF SOS BUTTON */}
 
         </div>
 
         {/* --- Right Column / Sidebar Area --- */}
-        <div className="space-y-6"> {/* Use space-y to add vertical space between items in this column */}
+        <div className="space-y-6">
 
-          {/* Render the functional DeviceForm, passing the userId */}
+          {/* Render the functional DeviceForm */}
+          {/* NOTE: Remember to apply cardClasses and headingClasses INSIDE DeviceForm.jsx */}
           <DeviceForm userId={userId} />
 
-          {/* Render the functional DeviceList, passing the userId */}
+          {/* Render the functional DeviceList */}
+          {/* NOTE: Remember to apply cardClasses and headingClasses INSIDE DeviceListComponent.jsx */}
           <DeviceListComponent userId={userId} />
 
-          {/* Geofence List Component (Remains the same) */}
+          {/* Geofence List Component */}
+          {/* NOTE: Remember to apply cardClasses and headingClasses INSIDE GeofenceList.jsx */}
           <GeofenceList userId={userId} />
 
-        </div> {/* End of Sidebar Column */} 
-      </div> 
+        </div> {/* End of Sidebar Column */}
+      </div> {/* End of Grid */}
     </main>
   );
 }

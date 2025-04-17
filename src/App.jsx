@@ -47,14 +47,16 @@ function App() {
 
   // Main application structure
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    // Changed bg-gray-50 to bg-slate-100 for page background
+    <div className="flex flex-col min-h-screen bg-slate-100">
       {/* Conditionally render Header only when logged in */}
       {user && <Header />} {/* You might pass handleSignOut to Header later */}
 
-      <div className="flex-grow"> {/* Ensure content area takes remaining space */}
+      {/* This inner div remains for layout, no background needed here */}
+      <div className="flex-grow">
         {user ? ( // Check if user is logged in
           <>
-            {/* Show Sign Out button somewhere accessible (e.g., below header or in MainContent) */}
+            {/* Show Sign Out button somewhere accessible */}
             <div className="container mx-auto px-6 pt-4 flex justify-end">
               <button
                 onClick={handleSignOut}
@@ -63,10 +65,8 @@ function App() {
                 Sign Out
               </button>
             </div>
-            {/* --- THIS IS THE CORRECTED LINE --- */}
             {/* Render MainContent and pass the user object as a prop */}
             <MainContent user={user} />
-            {/* --- END OF CORRECTION --- */}
           </>
         ) : (
           // If user is not logged in, show LoginPage
